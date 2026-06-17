@@ -7,21 +7,19 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from dotenv import load_dotenv
 load_dotenv()
-import streamlit as st
+
 for key in ("GROQ_API_KEY", "OPENAI_API_KEY"):
     if key in st.secrets and not os.getenv(key):
         os.environ[key] = st.secrets[key]
 
-if not os.getenv("GROQ_API_KEY"):
-    os.environ["GROQ_API_KEY"] = "gsk_xxx_your_actual_key_here"  # TEMP fallback
 from database.db import init_db
 
 # ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
-page_title="EduGen AI",
-page_icon="🎓",
-layout="wide",
-initial_sidebar_state="expanded",
+    page_title="EduGen AI",
+    page_icon="🎓",
+    layout="wide",
+    initial_sidebar_state="expanded",
 )
 
 # ── Initialize DB ─────────────────────────────────────────────────────────────
@@ -223,27 +221,26 @@ hr {
 # ── Sidebar navigation ────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
-        ...
+    <div style="text-align:center; padding: 12px 0 24px;">
+        <div style="font-size:48px;">🎓</div>
+        <div style="font-size:22px; font-weight:800; color:#f1f5f9; letter-spacing:-0.02em;">
+            EduGen <span style="color:#60a5fa;">AI</span>
+        </div>
+        <div style="font-size:11px; color:#64748b; margin-top:4px; text-transform:uppercase; letter-spacing:0.1em;">
+            Educational Content Generator
+        </div>
+    </div>
     """, unsafe_allow_html=True)
-   <div style="text-align:center; padding: 12px 0 24px;">
-       <div style="font-size:48px;">🎓</div>
-       <div style="font-size:22px; font-weight:800; color:#f1f5f9; letter-spacing:-0.02em;">
-           EduGen <span style="color:#60a5fa;">AI</span>
-       </div>
-       <div style="font-size:11px; color:#64748b; margin-top:4px; text-transform:uppercase; letter-spacing:0.1em;">
-           Educational Content Generator
-       </div>
-   </div>
-   """, unsafe_allow_html=True)
 
-st.markdown("---")
-st.markdown("**NAVIGATION**")
+    st.markdown("---")
+    st.markdown("**NAVIGATION**")
 
-page = st.radio(
-"Go to",
-["🏠 Dashboard", "📤 Upload", "🧠 Quiz", "🃏 Flashcards", "📊 Analytics"],
-label_visibility="collapsed",
-)
+    page = st.radio(
+        "Go to",
+        ["🏠 Dashboard", "📤 Upload", "🧠 Quiz", "🃏 Flashcards", "📊 Analytics"],
+        label_visibility="collapsed",
+    )
+
     st.markdown("---")
     st.markdown("**🔑 API KEY**")
 
@@ -252,64 +249,65 @@ label_visibility="collapsed",
         type="password",
         placeholder="gsk_...",
         help="Get a free key at console.groq.com — it's only used for this session, never stored."
-)
+    )
 
     if user_api_key:
         os.environ["GROQ_API_KEY"] = user_api_key
         st.success("Key set for this session ✅")
-st.markdown("---")
-st.markdown("**QUICK TIPS**")
-st.caption("• Use Groq API for free AI generation")
-st.caption("• Upload PDF, DOCX, or TXT files")
-st.caption("• Review flashcards daily for best retention")
 
-st.markdown("---")
-from utils.helpers import check_api_keys
-keys = check_api_keys()
-if keys["groq"]:
-st.success("⚡ Groq API connected")
-elif keys["openai"]:
-st.success("🤖 OpenAI API connected")
-else:
-st.error("🔑 No API key found")
-st.caption("Add GROQ_API_KEY to .env")
+    st.markdown("---")
+    st.markdown("**QUICK TIPS**")
+    st.caption("• Use Groq API for free AI generation")
+    st.caption("• Upload PDF, DOCX, or TXT files")
+    st.caption("• Review flashcards daily for best retention")
+
+    st.markdown("---")
+    from utils.helpers import check_api_keys
+    keys = check_api_keys()
+    if keys["groq"]:
+        st.success("⚡ Groq API connected")
+    elif keys["openai"]:
+        st.success("🤖 OpenAI API connected")
+    else:
+        st.error("🔑 No API key found")
+        st.caption("Add GROQ_API_KEY to .env")
 
 
 # ── Page headers ─────────────────────────────────────────────────────────────
 page_meta = {
-"🏠 Dashboard": ("🏠 Dashboard", "Your learning overview and recent activity"),
-"📤 Upload": ("📤 Upload Documents", "Add study materials to your library"),
-"🧠 Quiz": ("🧠 Quiz Generator", "Test your knowledge with AI-generated questions"),
-"🃏 Flashcards": ("🃏 Flashcard Studio", "Create and review interactive flashcards"),
-"📊 Analytics": ("📊 Learning Analytics", "Track your progress and identify gaps"),
+    "🏠 Dashboard": ("🏠 Dashboard", "Your learning overview and recent activity"),
+    "📤 Upload": ("📤 Upload Documents", "Add study materials to your library"),
+    "🧠 Quiz": ("🧠 Quiz Generator", "Test your knowledge with AI-generated questions"),
+    "🃏 Flashcards": ("🃏 Flashcard Studio", "Create and review interactive flashcards"),
+    "📊 Analytics": ("📊 Learning Analytics", "Track your progress and identify gaps"),
 }
 
 title, subtitle = page_meta.get(page, ("EduGen AI", ""))
 st.markdown(f"""
 <div class="main-header">
-   <h1>{title}</h1>
-   <p>{subtitle}</p>
+    <h1>{title}</h1>
+    <p>{subtitle}</p>
 </div>
 """, unsafe_allow_html=True)
 
 
 # ── Route to page ─────────────────────────────────────────────────────────────
 if page == "🏠 Dashboard":
-from components.dashboard import render
-render()
+    from components.dashboard import render
+    render()
 
 elif page == "📤 Upload":
-from components.upload import render
-render()
+    from components.upload import render
+    render()
 
 elif page == "🧠 Quiz":
-from components.quiz import render
-render()
+    from components.quiz import render
+    render()
 
 elif page == "🃏 Flashcards":
-from components.flashcards import render
-render()
+    from components.flashcards import render
+    render()
 
 elif page == "📊 Analytics":
-from components.analytics_page import render
-render()
+    from components.analytics_page import render
+    render()
