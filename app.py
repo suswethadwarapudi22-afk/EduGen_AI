@@ -222,7 +222,9 @@ hr {
 
 # ── Sidebar navigation ────────────────────────────────────────────────────────
 with st.sidebar:
-st.markdown("""
+    st.markdown("""
+        ...
+    """, unsafe_allow_html=True)
    <div style="text-align:center; padding: 12px 0 24px;">
        <div style="font-size:48px;">🎓</div>
        <div style="font-size:22px; font-weight:800; color:#f1f5f9; letter-spacing:-0.02em;">
